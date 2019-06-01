@@ -33,9 +33,16 @@ TOOL_FLAG = True
 API_FLAG = False
 # DEBUG模式是否开始的选择
 # 值为0：所有平台关闭DEBUG,值为1:所有平台开启DEBUG,值为其他：根据平台类型判断开启（默认设置的Windows下才开启）
-DEBUG = True
+DEBUG = False # ? 只有关闭了调试模式，后面才能让nginx来寻找静态文件
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+# ALLOWED_HOSTS是为了限定请求中的host值，以防止黑客构造包来发送请求。只有在列表中的host才能访问。
+ALLOWED_HOSTS = [
+    # '*', # 表示允许所有的host
+    '127.0.0.1', 
+    'localhost',
+    '172.26.111.24', # 寝室
+    '172.18.216.226' # 实验室
+    ]
 
 # Application definition
 
@@ -81,9 +88,10 @@ DATABASES = {
     # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # 修改数据库为MySQL，并进行配置
-        'NAME': 'vmatrix',       # 数据库的名称
+        'NAME': 'mysite',        # 数据库的名称
         'USER': 'root',          # 数据库的用户名
         'PASSWORD': '95938',     # 数据库的密码
+        # 'HOST': '172.18.216.226',
         'HOST': '127.0.0.1',
         'PORT': 3306,
         'OPTIONS': {'charset': 'utf8', }
@@ -222,6 +230,7 @@ CACHES = {
     # }
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
+        # "LOCATION": "redis://172.18.216.226:6379/1",
         "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
