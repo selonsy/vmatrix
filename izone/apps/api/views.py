@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-
-
 from oauth.models import Ouser
 from blog.models import Article, Tag, Category, Timeline
 from tool.models import ToolLink

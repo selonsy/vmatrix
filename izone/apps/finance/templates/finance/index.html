@@ -1,1 +1,486 @@
-<h1>{{ hello }}</h1>
+{% load static %}
+<html>
+<head>
+{% comment %} <link rel="stylesheet" type="text/css" href="~/Content/lib/datatables/jquery.dataTables.css">
+<link href="~/Content/lib/bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="~/Content/lib/datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet" />
+<link href="~/Content/css/common.css" rel="stylesheet" />
+<link href="~/Content/lib/jsoneditor/dist/jsoneditor.min.css" rel="stylesheet" /> {% endcomment %}
+<link href="{% static 'finance/css/jquery.dataTables.css' %}" rel="stylesheet" type="text/css" >
+<link href="{% static 'finance/css/bootstrap.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'finance/css/bootstrap-datetimepicker.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'finance/css/common.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'finance/css/jsoneditor.min.css' %}" rel="stylesheet" type="text/css"/>
+<style>
+    #app {
+        height: 100%;
+        width: 100%
+    }
+
+    #container {
+        margin-top: 50px;
+        height: 760px;
+        width: 100%
+    }
+
+    #oper_div {
+        width: 100%;
+        height: 50px;
+    }
+
+    #container #bar_total_amount {
+        height: 100%;
+        width: 65%;
+        float: left;
+    }
+
+    #container #pie_statistics_time {
+        height: 100%;
+        width: 30%;
+        float: left;
+    }
+</style>
+{% comment %}<script src="~/Content/lib/jquery/jquery.js"></script>
+<script src="~/Content/lib/bootstrap/bootstrap.js"></script>
+<script type="text/javascript" src="~/Content/lib/datatables/jquery.dataTables.js"></script>
+<script src="~/Content/lib/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="~/Content/lib/datetimepicker/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="~/Content/js/common/api.js"></script>
+<script type="text/javascript" src="~/Content/js/common/tool.js"></script>
+<script src="~/Content/lib/jsoneditor/dist/jsoneditor.min.js"></script> {% endcomment %}
+<script type="text/javascript" src="{% static 'finance/js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'finance/js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'finance/js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'finance/js/echarts.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'finance/js/bootstrap-datetimepicker.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'finance/js/api.js' %}"></script>
+<script type="text/javascript" src="{% static 'finance/js/tool.js' %}"></script>
+<script type="text/javascript" src="{% static 'finance/js/jsoneditor.min.js' %}"></script>
+<script>
+
+    function init_chart_all(data) {
+        var dom = document.getElementById("bar_total_amount");
+        var myChart = echarts.init(dom);
+        var app = {};
+        option = null;
+        var xAxisData = [];
+        var data1 = [];
+        var data2 = [];
+        var data3 = [];
+        for (var i = 0; i < data.length; i++) {
+            xAxisData.push(data[i].name);
+            data1.push(data[i].asset);
+            data2.push(data[i].debt);
+            data3.push(parseInt(data[i].asset) - parseInt(data[i].debt));
+        }
+
+        option = {
+            title: {
+                text: '总资产的增长条形图'
+            },
+            legend: {
+                data: ['资产', '负债', '合计'],
+                align: 'left'
+            },
+            toolbox: {
+                feature: {
+                    dataView: { show: true, readOnly: false },
+                    magicType: { show: true, type: ['line', 'bar'] },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            tooltip: {
+            },
+            xAxis: {
+                type: 'category',
+                data: xAxisData,
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            yAxis: {
+            },
+            series: [
+                {
+                    name: '资产',
+                    type: 'bar',
+                    data: data1,
+                    animationDelay: function (idx) {
+                        return idx * 10;
+                    },
+                    markPoint: {
+                        data: [
+                            { type: 'max', name: '最大值' },
+                            { type: 'min', name: '最小值' }
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            { type: 'average', name: '平均值' }
+                        ]
+                    },
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: true,
+                                position: 'top'
+                            }
+                        }
+                    }
+                },
+                {
+                    name: '负债',
+                    type: 'bar',
+                    data: data2,
+                    animationDelay: function (idx) {
+                        return idx * 10 + 100;
+                    },
+                    markPoint: {
+                        data: [
+                            { type: 'max', name: '最大值' },
+                            { type: 'min', name: '最小值' }
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            { type: 'average', name: '平均值' }
+                        ]
+                    },
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: true,
+                                position: 'top'
+                            }
+                        }
+                    }
+                },
+                {
+                    name: '合计',
+                    type: 'bar',
+                    data: data3,
+                    animationDelay: function (idx) {
+                        return idx * 10 + 200;
+                    },
+                    markPoint: {
+                        data: [
+                            { type: 'max', name: '最大值' },
+                            { type: 'min', name: '最小值' }
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            { type: 'average', name: '平均值' }
+                        ]
+                    },
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: true,
+                                position: 'top'
+                            }
+                        }
+                    }
+                }
+            ],
+            animationEasing: 'elasticOut',
+            animationDelayUpdate: function (idx) {
+                return idx * 5;
+            }
+        };
+
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+
+        myChart.on('click', function (params) {
+            var name = params.name;
+            get_detail(name);
+        });
+    }
+
+    function init_chart_block(data) {
+
+        var dom = document.getElementById("pie_statistics_time");
+        var myChart = echarts.init(dom);
+
+        var detail = data.detail;
+
+        var legend_data = [];
+        var series1_data = [];
+        var series2_data = [];
+        for (var i = 0; i < detail.length; i++) {
+            legend_data.push(detail[i].name);
+            if (detail[i].type == "资产") {
+                series1_data.push({ value: detail[i].number, name: detail[i].name });
+            }
+            if (detail[i].type == "负债") {
+                series2_data.push({ value: detail[i].number, name: detail[i].name });
+            }
+        }
+
+        option = {
+            title: {
+                text: data.name + '统计区间饼形图',                    
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: legend_data
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: { show: true },
+                    dataView: { show: true, readOnly: false },
+                    magicType: {
+                        show: true,
+                        type: ['pie', 'funnel']
+                    },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            calculable: false,
+            series: [
+                {
+                    name: '负债',
+                    type: 'pie',
+                    selectedMode: 'single',
+                    radius: [0, 70],                        
+                    x: '20%',
+                    width: '40%',
+                    funnelAlign: 'right',
+                    max: 1548,
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                position: 'inner'
+                            },
+                            labelLine: {
+                                show: false
+                            }
+                        }
+                    },
+                    data: series2_data
+                },
+                {
+                    name: '资产',
+                    type: 'pie',
+                    radius: [100, 140],                        
+                    x: '60%',
+                    width: '35%',
+                    funnelAlign: 'left',
+                    max: 1048,
+                    data: series1_data
+                }
+            ]
+        };
+
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+        var huanbi = parseFloat(data["huanbi"]).toFixed(2);
+        var huanbi_money = parseFloat(data["huanbi_money"]).toFixed(2);
+
+        var tongbi = parseFloat(data["tongbi"]).toFixed(2);
+        var tongbi_money = parseFloat(data["tongbi_money"]).toFixed(2);
+
+        if (huanbi > 0) { $("#sp_huanbi").text("环比上月 " + huanbi + "%" + " (" + huanbi_money + ") ↑").css("color","red"); }
+        if (huanbi < 0) { $("#sp_huanbi").text("环比上月 " + huanbi + "%" + " (" + huanbi_money + ") ↓").css("color", "green"); }
+
+        if (tongbi > 0) { $("#sp_tongbi").text("同比去年 " + tongbi + "%" + " (" + tongbi_money + ") ↑").css("color", "red"); }
+        if (tongbi < 0) { $("#sp_tongbi").text("同比去年 " + tongbi + "%" + " (" + tongbi_money + ") ↓").css("color", "green"); }          
+    }
+
+    //初始化
+    $(document).ready(function () {
+        ok();
+        bind_dom();
+        init();
+    });
+
+    function init() {
+        $("#fd_expected_time,#f_begin_time,#f_end_time").datetimepicker({
+            format: 'yyyy-mm-dd',
+            showMeridian: false,
+            autoclose: true,
+            todayBtn: true,
+            todayHighlight: true,
+            minView: 2,
+            pickerPosition: 'top-right'
+        });
+    }
+
+    //获取详情
+    function get_detail(name) {
+        if (!name) return;
+        var data = {
+            name: name,
+            is_show_gjjyb: $("input[name=f_is_show_gjjyb]").prop("checked") ? 1 : 0,
+        };
+        api.finance.getdetailbyname(data)
+            .done(function (json) {
+                init_chart_block(json.data);
+            })
+            .fail(function () {
+                $("#sp_error").text(json.msg);
+            });
+    }
+
+    //事件绑定
+    function bind_dom() {
+        $("#btn_reset").on("click", reset);
+        $("#btn_ok").on("click", ok);
+        $("#btn_add").on("click", add);
+    };
+
+    //搜索
+    function ok() {
+        var data = {
+            begin_time: $("#f_begin_time").val(),
+            end_time: $("#f_end_time").val(),
+            is_show_by_monthly: $("input[name=f_is_show_by_month]").prop("checked") ? 1 : 0,
+            is_show_gjjyb: $("input[name=f_is_show_gjjyb]").prop("checked") ? 1 : 0,
+        };
+        api.finance.getlist(data)
+            .done(function (json) {
+                var data1 = json.data;
+                init_chart_all(data1);
+                if (data1.length > 0) {
+                    get_detail(data1[data1.length - 1].name);
+                }
+            })
+            .fail(function (json) {
+                $("#sp_error").text(json.msg);
+            });
+    }
+
+    //重置
+    function reset() {
+        $("#f_begin_time").val("");
+        $("#f_end_time").val("");
+        $("input[name=f_is_show_by_month]").prop('checked', true);
+        $("input[name=f_is_show_gjjyb]").prop('checked', false);
+
+        ok();
+    }
+
+    //新增
+    function add() {
+        $("#jsoneditor").html(""); //先清空
+
+        var container = document.getElementById("jsoneditor");
+        var options = {
+            mode: "code",
+            modes: ['code', 'form', 'text', 'tree', 'view'],
+            onModeChange: function (newMode, oldMode) {
+
+            }
+        };
+        var editor = new JSONEditor(container, options);
+
+        $("#myModal #myModalLabel").text("新增资产详情");
+        api.finance.getlocations()
+            .done(function (json) {
+
+                var data = {};
+                data.name = new Date().Format("yyyy-MM-dd");
+                if (!json.data) json.data = [{ 'name': '支付宝', 'type': '资产', 'number': 0.0 }, { 'name': '招行信用卡', 'type': '负债', 'number': 0.0 }];
+                //for (var i = 0; i < json.data.length; i++) {
+                //    json.data[i]["number"] = 1.0;
+                //}
+                data.detail = json.data;
+                editor.set(data);
+
+                $("#myModal").modal("show");
+            })
+            .fail(function (json) {
+                $("#sp_error").text(json.msg);
+            })
+            ;
+
+        $("#btn_modal_ok").on("click", function () {
+            var data = {};
+            data.id = "";
+            data.value = JSON.stringify(editor.get());
+
+            api.finance.add(data)
+                .done(function (json) {
+                    alert(json.info);
+                    $("#myModal").modal("hide");
+                    ok();
+                })
+                .fail(function (json) {
+                    $("#sp_error").text(json.msg);
+                })
+                ;
+        });
+    }
+
+</script>
+</head>
+<body>
+<div id="app">
+    <div id="container">
+        <div id="bar_total_amount">
+
+        </div>
+        <div id="pie_statistics_time">
+
+        </div>
+    </div>
+    <div id="oper_div">
+        <form class="form-inline" action="" target="frameFile">
+            <div class="form-group">
+                <label for="f_begin_time">开始时间</label>
+                <input type="text" class="form-control" id="f_begin_time" readonly />
+            </div>
+            <div class="form-group">
+                <label for="f_end_time">结束时间</label>
+                <input type="text" class="form-control" id="f_end_time" readonly />
+            </div>
+            按月度：<input type="checkbox" class="checkbox" name="f_is_show_by_month" checked="checked"/>
+            按公医：<input type="checkbox" class="checkbox" name="f_is_show_gjjyb" />
+            {% comment %} @*<input type="radio" name="f_is_show_by_month" value="1" />是
+            <input type="radio" name="f_is_show_by_month" value="0" checked />否*@ {% endcomment %}
+            <button type="button" class="btn btn-primary" id="btn_ok">确定</button>
+            <button type="button" class="btn btn-warning" id="btn_reset">重置</button>
+            <button type="button" class="btn btn-success" id="btn_add">新增</button>
+            <label><span>&nbsp;&nbsp;</span><span id="sp_error"></span></label>
+            <label>
+                <span>&nbsp;&nbsp;</span>
+                <span id="sp_tongbi"></span>&nbsp;&nbsp;
+                <span id="sp_huanbi"></span>
+            </label>
+        </form>
+        <iframe name='frameFile' style='display: none;'></iframe>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop='static'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div>
+                <div id="jsoneditor" style="width:100%;height:650px;min-height:600px"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="btn_modal_ok">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
