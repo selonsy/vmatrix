@@ -7,7 +7,7 @@ from pymongo import MongoClient
 class MG(object):
     def __init__(self):
         self.client = MongoClient("127.0.0.1", 27017)
-        self.db = self.client["vmatrix"]        
+        self.db = self.client["shenjinlong"]        
 
 """
 mongodb_operation 静态方法，用来和 mongodb 操作交互 
