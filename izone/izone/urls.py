@@ -17,8 +17,12 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
-from django.views.generic import TemplateView
+import xadmin 
+xadmin.autodiscover()
+from xadmin.plugins import xversion
+xversion.register_models()
 
+from django.views.generic import TemplateView
 from django.contrib.sitemaps.views import sitemap
 from blog.sitemaps import ArticleSitemap, CategorySitemap, TagSitemap
 from blog.feeds import AllArticleRssFeed
@@ -44,6 +48,7 @@ sitemaps = {
 
 urlpatterns = [
     url(r'^adminx/', admin.site.urls),
+    url(r'^xadmin/',include(xadmin.site.urls)), 
     url(r'^accounts/', include('allauth.urls')),  # allauth
     url(r'^accounts/', include(('oauth.urls','oauth'), namespace='oauth')),  # oauth,只展现一个用户登录界面
     url('', include(('blog.urls','blog'), namespace='blog')),  # blog

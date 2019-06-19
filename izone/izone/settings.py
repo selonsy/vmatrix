@@ -25,8 +25,10 @@ SECRET_KEY = '#!kta!9e0)24d@9#<*=ra$r!0k0+p8@w+a%7g1bbof0+ad@4_('
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# 添加 apps 目录
+# 添加 apps 目录 (修改了app的路径，避免程序无法识别，增加配置)
+# pycharm 中还需要将apps，extra_apps设置为源码文件夹，即：右键--mark directory as--sources root
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+sys.path.insert(1, os.path.join(BASE_DIR, 'extra_apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -47,9 +49,14 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # 添加了新的app需要重启服务器
 INSTALLED_APPS = [
-    'bootstrap_admin',  # 注册bootstrap后台管理界面,这个必须放在最前面
-
-    'django.contrib.admin',
+    # 'simpleui',           # django后台管理模板:simpleui
+    'bootstrap_admin',      # django后台管理模板:bootstrap_admin
+    
+    'xadmin',               # django后台管理模板:xadmin(包括crispy_forms，reversion)
+    'crispy_forms',
+    'reversion',            # (可选) 
+    
+    'django.contrib.admin', # 默认添加后台管理功能
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -69,7 +76,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
 
-    'crispy_forms',  # bootstrap表单样式
+    # 'crispy_forms',  # bootstrap表单样式
     'imagekit',  # 上传图片的应用
 
     'haystack',  # 全文搜索应用 这个要放在其他应用之前
@@ -184,6 +191,11 @@ USE_TZ = False  # 关闭国际时间，不然数据库报错
 # 静态文件收集
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# for simpleui
+# STATICFILES_DIRS = [
+#      os.path.join(BASE_DIR, "static"),
+#  ]
 
 # 媒体文件收集
 MEDIA_URL = '/media/'
