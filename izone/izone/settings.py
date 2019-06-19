@@ -77,13 +77,17 @@ INSTALLED_APPS = [
     'rest_framework',
 
     # 'crispy_forms',  # bootstrap表单样式
-    'imagekit',  # 上传图片的应用
+    'imagekit', # 上传图片的应用
 
-    'haystack',  # 全文搜索应用 这个要放在其他应用之前
-    'blog',  # 博客应用
-    'tool',  # 工具
+    'haystack', # 全文搜索应用 这个要放在其他应用之前
+    'blog',     # 博客应用
+    'tool',     # 工具
     'comment',  # 评论
-    'finance',  # 财务
+    
+    # selonsy自定义
+    'finance',  # 财务模块
+    'testapp',  # 测试模块
+    'secret' ,  # 隐私模块
 ]
 
 # 自定义用户model

@@ -1,1 +1,27 @@
 CREATE DATABASE `vmatrix` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+1.本站有两套后台管理系统，xadmin + bootstrap_admin
+xadmin:
+>入口为:/xadmin
+>配置为:app/adminx.py
+>配置示例:
+import xadmin 
+from .models import User
+class UserAdmin(object):
+    list_display = ['name', 'age']
+    search_fields = ['name', ] 
+    list_editable = ['name'] 
+    list_filter = ['name']       
+xadmin.site.register(User,UserAdmin)
+
+bootstrap_admin:
+>入口为:/adminx
+>配置为:app/admin.py
+>配置示例:
+from django.contrib import admin
+from .models import User
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('name', 'age')
+    ...
+
