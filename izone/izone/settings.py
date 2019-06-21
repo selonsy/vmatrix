@@ -90,7 +90,7 @@ INSTALLED_APPS = [
     'secret',   # 隐私模块
 ]
 
-# 自定义用户model
+# 自定义用户model（注：该配置会覆盖默认的User模型，数据库中不会自动生成auth相关的表，而是oauth_ouser相关的表）
 AUTH_USER_MODEL = 'oauth.Ouser'
 
 # allauth配置
