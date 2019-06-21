@@ -87,7 +87,7 @@ INSTALLED_APPS = [
     # selonsy自定义
     'finance',  # 财务模块
     'testapp',  # 测试模块
-    'secret' ,  # 隐私模块
+    'secret',   # 隐私模块
 ]
 
 # 自定义用户model

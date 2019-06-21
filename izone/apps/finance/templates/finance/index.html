@@ -292,6 +292,10 @@
         var tongbi = parseFloat(data["tongbi"]).toFixed(2);
         var tongbi_money = parseFloat(data["tongbi_money"]).toFixed(2);
 
+        //sp_period
+        //sp_finance
+        $("#sp_period").text("统计时间：" + data["name"]).css("color","blue");
+        $("#sp_finance").text("资产详情：" + data["total"] + "（ +" + data["asset"] + " / -" + data["debt"] +" ）").css("color","blue");
         if (huanbi > 0) { $("#sp_huanbi").text("环比上月 " + huanbi + "%" + " (" + huanbi_money + ") ↑").css("color","red"); }
         if (huanbi < 0) { $("#sp_huanbi").text("环比上月 " + huanbi + "%" + " (" + huanbi_money + ") ↓").css("color", "green"); }
 
@@ -454,8 +458,11 @@
             <button type="button" class="btn btn-warning" id="btn_reset">重置</button>
             <button type="button" class="btn btn-success" id="btn_add">新增</button>
             <label><span>&nbsp;&nbsp;</span><span id="sp_error"></span></label>
-            <label>
-                <span>&nbsp;&nbsp;</span>
+{#            <div></div>#}
+            <label style="margin-top: 20px;float: right;margin-right: 40px;margin-bottom: 20px">
+{#                <span>&nbsp;&nbsp;</span>#}
+                <span id="sp_period"></span><span>&nbsp;&nbsp;</span>
+                <span id="sp_finance"></span><span>&nbsp;&nbsp;</span>
                 <span id="sp_tongbi"></span>&nbsp;&nbsp;
                 <span id="sp_huanbi"></span>
             </label>

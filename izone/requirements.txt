@@ -1,6 +1,6 @@
 pymongo
 bleach
-bootstrap-admin
+bootstrap-admin==0.3.7.1
 certifi
 chardet
 defusedxml
@@ -35,3 +35,6 @@ urllib3
 user-agent
 webencodings
 Whoosh
+xadmin
+future
+reversion
