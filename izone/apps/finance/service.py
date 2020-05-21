@@ -113,12 +113,15 @@ def get_asset_debt_total(data, is_show_gjjyb=True):
         return None    
     asset = 0
     debt = 0
+    new_detail = []
     for d in data["detail"]:
-        if not is_show_gjjyb and d["name"] in ('公积金', '医保'):
+        if not is_show_gjjyb and d["name"] in ('公积金', '医保卡'):
             continue
         if d["type"] == '资产':
             asset += d["number"]
         elif d["type"] == '负债':
             debt += d["number"]
+        new_detail.append(d)
+    data["detail"] = new_detail
     total = asset - debt
     return int(asset), int(debt), int(total)
