@@ -73,6 +73,13 @@
             data2.push(data[i].debt);
             data3.push(parseInt(data[i].asset) - parseInt(data[i].debt));
         }
+        
+        data3[data3.length-1]={
+            value: data3[data3.length-1],
+            itemStyle: {
+                color: '#a90000'
+            }
+        };
 
         option = {
             title: {
@@ -109,17 +116,17 @@
                     animationDelay: function (idx) {
                         return idx * 10;
                     },
-                    markPoint: {
-                        data: [
-                            { type: 'max', name: '最大值' },
-                            { type: 'min', name: '最小值' }
-                        ]
-                    },
-                    markLine: {
-                        data: [
-                            { type: 'average', name: '平均值' }
-                        ]
-                    },
+                    // markPoint: {
+                    //     data: [
+                    //         { type: 'max', name: '最大值' },
+                    //         { type: 'min', name: '最小值' }
+                    //     ]
+                    // },
+                    // markLine: {
+                    //     data: [
+                    //         { type: 'average', name: '平均值' }
+                    //     ]
+                    // },
                     itemStyle: {
                         normal: {
                             label: {
@@ -136,17 +143,17 @@
                     animationDelay: function (idx) {
                         return idx * 10 + 100;
                     },
-                    markPoint: {
-                        data: [
-                            { type: 'max', name: '最大值' },
-                            { type: 'min', name: '最小值' }
-                        ]
-                    },
-                    markLine: {
-                        data: [
-                            { type: 'average', name: '平均值' }
-                        ]
-                    },
+                    // markPoint: {
+                    //     data: [
+                    //         { type: 'max', name: '最大值' },
+                    //         { type: 'min', name: '最小值' }
+                    //     ]
+                    // },
+                    // markLine: {
+                    //     data: [
+                    //         { type: 'average', name: '平均值' }
+                    //     ]
+                    // },
                     itemStyle: {
                         normal: {
                             label: {
@@ -163,17 +170,17 @@
                     animationDelay: function (idx) {
                         return idx * 10 + 200;
                     },
-                    markPoint: {
-                        data: [
-                            { type: 'max', name: '最大值' },
-                            { type: 'min', name: '最小值' }
-                        ]
-                    },
-                    markLine: {
-                        data: [
-                            { type: 'average', name: '平均值' }
-                        ]
-                    },
+                    // markPoint: {
+                    //     data: [
+                    //         { type: 'max', name: '最大值' },
+                    //         { type: 'min', name: '最小值' }
+                    //     ]
+                    // },
+                    // markLine: {
+                    //     data: [
+                    //         { type: 'average', name: '平均值' }
+                    //     ]
+                    // },
                     itemStyle: {
                         normal: {
                             label: {
