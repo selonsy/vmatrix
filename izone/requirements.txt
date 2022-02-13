@@ -10,7 +10,7 @@ chardet==3.0.4
 cryptography==2.7
 defusedxml==0.6.0
 diff-match-patch==20181111
-Django==1.11.21
+Django==2.2.27
 django-allauth==0.39.1
 django-appconf==1.0.3
 django-crispy-forms==1.7.2
