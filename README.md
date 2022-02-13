@@ -1,5 +1,5 @@
 一个以 Django 作为框架搭建的个人博客。
-
+python版本：3.6.6，依赖项基于根目录下面的：requirements.txt
 博客效果： https://vmatrix.top/
 
 ## 功能介绍
